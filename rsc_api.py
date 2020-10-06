@@ -80,7 +80,7 @@ for i in range(len(fitness_subs)):
     print(f"{bcolors.WARNING}{time.ctime(int(fitness_subs[i]['start']))}{bcolors.ENDC}")
     print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
     print(f"{bcolors.BOLD}\n To subscribe use number: {str(i)}{bcolors.ENDC}")
-    print("\n"+"*-"*20+"\n")
+    print("\n"+"_-"*18+"\n")
 choice = int(input("Enter choice: "))
 while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
     sub = dict(fitness_subs[choice])
