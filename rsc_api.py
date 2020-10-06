@@ -69,10 +69,10 @@ password = getpass.getpass("Enter Password: ")
 user_dict = login(username, password)
 fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness']
 for i in range(len(fitness_subs)):
-    print(f"{bcolors.UNDERLINE} {fitness_subs[i]['naam']}")
-    print(f"{bcolors.WARNING} {time.ctime(int(fitness_subs[i]['start']))}")
+    print(f"{bcolors.UNDERLINE}{fitness_subs[i]['naam']}{bcolors.ENDC}")
+    print(f"{bcolors.WARNING}{time.ctime(int(fitness_subs[i]['start']))}{bcolors.ENDC}")
     print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
-    print(f"{bcolors.BOLD}\n To subscribe use number: ", str(i))
+    print(f"{bcolors.BOLD}\n To subscribe use number: {str(i)}{bcolors.ENDC}")
     print("\n"+"*-"*20+"\n")
 choice = int(input("Enter choice: "))
 while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
@@ -87,6 +87,6 @@ while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
         
         time.sleep(5)
         
-print(f"{bcolors.UNDERLINE}Success!\n")
+print(f"{bcolors.UNDERLINE}Success!\n{bcolors.ENDC}")
 print("Your agenda has been updated with linschrijvingId ", str(get_user_agenda(user_dict['klantId'], user_dict['token'])[0]['linschrijvingId']))
 logout(user_dict['klantId'], user_dict['token'])
