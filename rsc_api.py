@@ -89,10 +89,10 @@ while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
     
     if "error" in status:
         for attempt in range(50):
-            rest = random.randint(1,5)
+            rest = random.randint(1,3)
             time.sleep(rest)
         
-        time.sleep(5)
+        time.sleep(1)
         
 print(f"{bcolors.UNDERLINE}{bcolors.OKGREEN}Success!\n{bcolors.ENDC}")
 print("Your agenda has been updated with linschrijvingId ", str(get_user_agenda(user_dict['klantId'], user_dict['token'])[0]['linschrijvingId']))
