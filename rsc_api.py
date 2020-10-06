@@ -64,8 +64,7 @@ for i in range(len(fitness_subs)):
     print(time.ctime(int(fitness_subs[i]['start'])))
     print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
     print("\n To subscribe use number: ", str(i))
-    print("\n\n")
-    print("*-"*50)
+    print("\n"+"*-"*20+"\n")
 choice = int(input("Enter choice: "))
 while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
     sub = dict(fitness_subs[choice])
