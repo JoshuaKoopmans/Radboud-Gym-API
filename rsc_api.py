@@ -87,6 +87,6 @@ while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
         
         time.sleep(5)
         
-print(f"{bcolors.UNDERLINE}"Success!\n")
+print(f"{bcolors.UNDERLINE}Success!\n")
 print("Your agenda has been updated with linschrijvingId ", str(get_user_agenda(user_dict['klantId'], user_dict['token'])[0]['linschrijvingId']))
 logout(user_dict['klantId'], user_dict['token'])
