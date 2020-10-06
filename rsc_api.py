@@ -2,6 +2,15 @@ import requests, json, time, random, getpass
 
 ENDPOINT = "https://publiek.usc.ru.nl/app/api/v1/?module={}&method={}&lang=nl"
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 def login(username, password):
     
@@ -60,10 +69,10 @@ password = getpass.getpass("Enter Password: ")
 user_dict = login(username, password)
 fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness']
 for i in range(len(fitness_subs)):
-    print(fitness_subs[i]['naam'])
-    print(time.ctime(int(fitness_subs[i]['start'])))
+    print(f"{bcolors.UNDERLINE}" + fitness_subs[i]['naam'] + "")
+    print(f"{bcolors.WARNING}" + time.ctime(int(fitness_subs[i]['start'])) + "")
     print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
-    print("\n To subscribe use number: ", str(i))
+    print(f"{bcolors.BOLD}\n To subscribe use number: ", str(i))
     print("\n"+"*-"*20+"\n")
 choice = int(input("Enter choice: "))
 while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
@@ -78,5 +87,6 @@ while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
         
         time.sleep(5)
         
-print("Success!\n", get_user_agenda(user_dict['klantId'], user_dict['token']))
+print(f"{bcolors.UNDERLINE}"Success!\n")
+print("Your agenda has been updated with linschrijvingId ", str(get_user_agenda(user_dict['klantId'], user_dict['token'])[0]['linschrijvingId']))
 logout(user_dict['klantId'], user_dict['token'])
