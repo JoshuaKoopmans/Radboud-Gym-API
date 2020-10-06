@@ -61,7 +61,6 @@ user_dict = login(username, password)
 fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness']
 for i in range(len(fitness_subs)):
     print(fitness_subs[i]['naam'])
-    print(fitness_subs[i]['datum'])
     print(time.ctime(int(fitness_subs[i]['start'])))
     print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
     print("\n To subscribe use number: ", str(i))
