@@ -69,8 +69,8 @@ password = getpass.getpass("Enter Password: ")
 user_dict = login(username, password)
 fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness']
 for i in range(len(fitness_subs)):
-    print(f"{bcolors.UNDERLINE}" + fitness_subs[i]['naam'] + "")
-    print(f"{bcolors.WARNING}" + time.ctime(int(fitness_subs[i]['start'])) + "")
+    print(f"{bcolors.UNDERLINE} {fitness_subs[i]['naam']}")
+    print(f"{bcolors.WARNING} {time.ctime(int(fitness_subs[i]['start']))}")
     print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
     print(f"{bcolors.BOLD}\n To subscribe use number: ", str(i))
     print("\n"+"*-"*20+"\n")
