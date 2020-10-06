@@ -74,7 +74,7 @@ def delete_subscription(klant_id, token, linschrijving_id):
 username = str(input("Enter Username: "))
 password = getpass.getpass("Enter Password: ")
 user_dict = login(username, password)
-fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:11]
+fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:12]
 for i in range(len(fitness_subs)):
     print(f"{bcolors.UNDERLINE}{fitness_subs[i]['naam']}{bcolors.ENDC}")
     print(f"{bcolors.WARNING}{time.ctime(int(fitness_subs[i]['start']))}{bcolors.ENDC}")
