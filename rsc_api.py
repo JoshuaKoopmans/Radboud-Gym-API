@@ -1,4 +1,4 @@
-import requests, json, time, random, getpass
+import requests, json, time, random, getpass, sys
 
 ENDPOINT = "https://publiek.usc.ru.nl/app/api/v1/?module={}&method={}&lang=nl"
 
