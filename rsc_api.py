@@ -71,7 +71,7 @@ def delete_subscription(klant_id, token, linschrijving_id):
     return json.loads(r.text)
 
 
-username = str(input("Enter Username: "))
+username = getpass.getuser("Enter Username: ")
 password = getpass.getpass("Enter Password: ")
 user_dict = login(username, password)
 fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:12]
@@ -88,12 +88,10 @@ while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
     status = add_subscription(user_dict['klantId'], user_dict['token'], sub['inschrijvingId'], sub['poolId'], sub['laanbodId'], sub['start'], sub['eind'] )
     
     if "error" in status:
-        for attempt in range(50):
-            rest = random.randint(1,3)
-            time.sleep(rest)
-        
-        time.sleep(1)
+        rest = random.randint(1,3)
+        time.sleep(rest)
         
 print(f"{bcolors.UNDERLINE}{bcolors.OKGREEN}Success!\n{bcolors.ENDC}")
-print("Your agenda has been updated with linschrijvingId ", str(get_user_agenda(user_dict['klantId'], user_dict['token'])[0]['linschrijvingId']))
+new_agenda_item = get_user_agenda(user_dict['klantId'], user_dict['token'])[0]
+print("Your agenda has been updated with:\n{}\n{}".format(new_agenda_item['naam'], str(time.ctime(int(new_agenda_item['start'])))))
 logout(user_dict['klantId'], user_dict['token'])
