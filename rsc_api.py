@@ -82,10 +82,13 @@ for i in range(len(fitness_subs)):
     print(f"{bcolors.BOLD}\n To subscribe use number: {str(i)}{bcolors.ENDC}")
     print("\n"+"_-"*18+"\n")
 
-try:
-    choice = int(input("Enter choice: "))
-except Exception:
-    sys.exit(1)
+while 1:
+	try:
+		choice = int(input("Enter choice: "))
+		break
+	except Exception:
+		print('try again!')
+		
           
 while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
     sub = dict(fitness_subs[choice])
