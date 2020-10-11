@@ -71,7 +71,7 @@ def delete_subscription(klant_id, token, linschrijving_id):
     return json.loads(r.text)
 
 
-username = getpass.getuser("Enter Username: ")
+username = str(input("Enter Username: "))
 password = getpass.getpass("Enter Password: ")
 user_dict = login(username, password)
 fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:12]
@@ -81,7 +81,12 @@ for i in range(len(fitness_subs)):
     print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
     print(f"{bcolors.BOLD}\n To subscribe use number: {str(i)}{bcolors.ENDC}")
     print("\n"+"_-"*18+"\n")
-choice = int(input("Enter choice: "))
+
+try:
+    choice = int(input("Enter choice: "))
+except Exception:
+    sys.exit(1)
+          
 while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
     sub = dict(fitness_subs[choice])
     
