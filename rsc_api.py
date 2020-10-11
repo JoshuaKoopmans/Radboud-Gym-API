@@ -70,11 +70,16 @@ def delete_subscription(klant_id, token, linschrijving_id):
     r = requests.post(url=ENDPOINT.format('locatie', 'deleteLinschrijving'), data=data)
     return json.loads(r.text)
 
+while 1:
+	try:
+		username = str(input("Enter Username: "))
+		password = getpass.getpass("Enter Password: ")
+		user_dict = login(username, password)
+		fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:12]
+		break
+	except:
+		print('Wrong user name or password, please try again bitch!')
 
-username = str(input("Enter Username: "))
-password = getpass.getpass("Enter Password: ")
-user_dict = login(username, password)
-fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:12]
 for i in range(len(fitness_subs)):
     print(f"{bcolors.UNDERLINE}{fitness_subs[i]['naam']}{bcolors.ENDC}")
     print(f"{bcolors.WARNING}{time.ctime(int(fitness_subs[i]['start']))}{bcolors.ENDC}")
@@ -82,13 +87,16 @@ for i in range(len(fitness_subs)):
     print(f"{bcolors.BOLD}\n To subscribe use number: {str(i)}{bcolors.ENDC}")
     print("\n"+"_-"*18+"\n")
 
-try:
-    choice = int(input("Enter choice: "))
-except Exception:
-    sys.exit(1)
+while 1:
+	try:
+		choice = int(input("Enter choice: "))
+		sub = dict(fitness_subs[choice])
+		break
+	except Exception:
+		print('try again!')
+		
           
 while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
-    sub = dict(fitness_subs[choice])
     
     status = add_subscription(user_dict['klantId'], user_dict['token'], sub['inschrijvingId'], sub['poolId'], sub['laanbodId'], sub['start'], sub['eind'] )
     
