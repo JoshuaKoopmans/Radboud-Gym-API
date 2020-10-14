@@ -111,7 +111,8 @@ if __name__ == "__main__":
         status = add_subscription(user_dict['klantId'], user_dict['token'], sub['inschrijvingId'], sub['poolId'], sub['laanbodId'], sub['start'], sub['eind'] )
         if 'error' in status:
             if status['error'] == 'Niet gevonden':
-                time.sleep(1)
+                max_seconds = int((int(sub['start']) - time.time())/3600)+1
+                time.sleep(random.randint(1, max_seconds))
             else: break
             
     print(f"{bcolors.UNDERLINE}{bcolors.OKGREEN}Success!\n{bcolors.ENDC}")
