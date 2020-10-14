@@ -1,4 +1,4 @@
-import requests, json, time, random, getpass, sys
+import requests, json, time, random, getpass, sys, os
 
 ENDPOINT = "https://publiek.usc.ru.nl/app/api/v1/?module={}&method={}&lang=nl"
 
@@ -70,41 +70,51 @@ def delete_subscription(klant_id, token, linschrijving_id):
     r = requests.post(url=ENDPOINT.format('locatie', 'deleteLinschrijving'), data=data)
     return json.loads(r.text)
 
-while 1:
-	try:
-		username = str(input("Enter Username: "))
-		password = getpass.getpass("Enter Password: ")
-		user_dict = login(username, password)
-		fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:12]
-		break
-	except:
-		print('Wrong user name or password, please try again bitch!')
+if __name__ == "__main__":
+    while 1:
+        try:
+            username = str(input("Enter Username: "))
+            password = getpass.getpass("Enter Password: ")
+            nordvpn = input("change ip per hour? (y/n): ").lower()
+            if nordvpn=='': nordvpn='n'
+            if nordvpn not in 'yn': break
+            else: nordvpn = True if nordvpn=='y' else False
+            user_dict = login(username, password)
+            fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:12]
+            break
+        except:
+            print('Wrong user name or password, please try again bitch!')
+            
+    for i in range(len(fitness_subs)):
+        print(f"{bcolors.UNDERLINE}{fitness_subs[i]['naam']}{bcolors.ENDC}")
+        print(f"{bcolors.WARNING}{time.ctime(int(fitness_subs[i]['start']))}{bcolors.ENDC}")
+        #print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
+        print(f"{bcolors.BOLD}\n To subscribe use number: {str(i)}{bcolors.ENDC}")
+        print("\n"+"_-"*18+"\n")
 
-for i in range(len(fitness_subs)):
-    print(f"{bcolors.UNDERLINE}{fitness_subs[i]['naam']}{bcolors.ENDC}")
-    print(f"{bcolors.WARNING}{time.ctime(int(fitness_subs[i]['start']))}{bcolors.ENDC}")
-    print(fitness_subs[i]['inschrijvingen'], "/", fitness_subs[i]['maxInschrijvingen'])
-    print(f"{bcolors.BOLD}\n To subscribe use number: {str(i)}{bcolors.ENDC}")
-    print("\n"+"_-"*18+"\n")
-
-while 1:
-	try:
-		choice = int(input("Enter choice: "))
-		sub = dict(fitness_subs[choice])
-		break
-	except Exception:
-		print('try again!')
-		
-          
-while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
-    
-    status = add_subscription(user_dict['klantId'], user_dict['token'], sub['inschrijvingId'], sub['poolId'], sub['laanbodId'], sub['start'], sub['eind'] )
-    
-    if "error" in status:
-        rest = random.randint(1,3)
-        time.sleep(rest)
-        
-print(f"{bcolors.UNDERLINE}{bcolors.OKGREEN}Success!\n{bcolors.ENDC}")
-new_agenda_item = get_user_agenda(user_dict['klantId'], user_dict['token'])[0]
-print("Your agenda has been updated with:\n{}\n{}".format(new_agenda_item['naam'], str(time.ctime(int(new_agenda_item['start'])))))
-logout(user_dict['klantId'], user_dict['token'])
+    while 1:
+        try:
+            choice = int(input("Enter choice: "))
+            sub = dict(fitness_subs[choice])
+            break
+        except Exception:
+            print('try again!')
+            
+    t0 = time.time() # Record how long ago the ip was changed  
+    while get_user_agenda(user_dict['klantId'], user_dict['token']) == [] :
+        if nordvpn:
+            if time.time() - t0 > 3600:
+                os.system('nordvpn c')
+                time.sleep(8)
+                t0 = time.time()
+                user_dict = login(username, password)
+        status = add_subscription(user_dict['klantId'], user_dict['token'], sub['inschrijvingId'], sub['poolId'], sub['laanbodId'], sub['start'], sub['eind'] )
+        if 'error' in status:
+            if status['error'] == 'Niet gevonden':
+                time.sleep(1)
+            else: break
+            
+    print(f"{bcolors.UNDERLINE}{bcolors.OKGREEN}Success!\n{bcolors.ENDC}")
+    new_agenda_item = get_user_agenda(user_dict['klantId'], user_dict['token'])[0]
+    print("Your agenda has been updated with:\n{}\n{}".format(new_agenda_item['naam'], str(time.ctime(int(new_agenda_item['start'])))))
+    logout(user_dict['klantId'], user_dict['token'])
