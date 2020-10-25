@@ -80,7 +80,7 @@ if __name__ == "__main__":
             if nordvpn not in 'yn': break
             else: nordvpn = True if nordvpn=='y' else False
             user_dict = login(username, password)
-            fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if sub['naam']=='Fitness'][:12]
+            fitness_subs = [sub for sub in get_available_subscriptions(user_dict['klantId'], user_dict['token']) if "Fitness" in sub['naam']][:22]
             break
         except:
             print('Wrong user name or password, please try again bitch!')
